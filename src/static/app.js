@@ -569,6 +569,16 @@ document.addEventListener("DOMContentLoaded", () => {
         `
         }
       </div>
+      <div class="social-share">
+        <span class="share-label">Share:</span>
+        <a href="https://twitter.com/intent/tweet?text=${encodeURIComponent(`Check out ${name} at Mergington High School! ${details.description}`)}&url=${encodeURIComponent(window.location.href)}"
+           target="_blank" rel="noopener noreferrer" class="share-btn share-twitter" aria-label="Share on Twitter">𝕏</a>
+        <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}&quote=${encodeURIComponent(`Check out ${name} at Mergington High School!`)}"
+           target="_blank" rel="noopener noreferrer" class="share-btn share-facebook" aria-label="Share on Facebook">f</a>
+        <a href="https://wa.me/?text=${encodeURIComponent(`Check out ${name} at Mergington High School! ${details.description} ${window.location.href}`)}"
+           target="_blank" rel="noopener noreferrer" class="share-btn share-whatsapp" aria-label="Share on WhatsApp">💬</a>
+        <button class="share-btn share-copy" data-activity="${name}" aria-label="Copy link">🔗</button>
+      </div>
     `;
 
     // Add click handlers for delete buttons
@@ -586,6 +596,27 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       }
     }
+
+    // Add click handler for copy link button
+    const copyButton = activityCard.querySelector(".share-copy");
+    copyButton.addEventListener("click", () => {
+      const shareText = `Check out ${name} at Mergington High School! ${details.description} ${window.location.href}`;
+      navigator.clipboard.writeText(shareText).then(() => {
+        copyButton.textContent = "✅";
+        copyButton.setAttribute("aria-label", "Link copied!");
+        setTimeout(() => {
+          copyButton.textContent = "🔗";
+          copyButton.setAttribute("aria-label", "Copy link");
+        }, 2000);
+      }).catch(() => {
+        copyButton.textContent = "❌";
+        copyButton.setAttribute("aria-label", "Copy failed");
+        setTimeout(() => {
+          copyButton.textContent = "🔗";
+          copyButton.setAttribute("aria-label", "Copy link");
+        }, 2000);
+      });
+    });
 
     activitiesList.appendChild(activityCard);
   }
